@@ -1,0 +1,14 @@
+name: Your Plugin Name
+description: A description of your plugin, shown in the plugin settings page.
+url: https://github.com/Your/Respository
+version: 0.1.0
+ui:
+  javascript:
+    - YourPluginID.js
+  css:
+    - YourPluginID.css
+settings:
+  enablePlugin:
+    displayName: Enable the plugin
+    description: Toggle the plugin on and off.
+    type: BOOLEAN

@@ -4,7 +4,10 @@
   "description": "A template for creating plugins for Stash using the native plugin API.",
   "main": "./src/main.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack --config webpack.prod.js",
+    "dev": "webpack --config webpack.dev.js",
+    "start": "npm run watch",
+    "watch": "webpack --config webpack.dev.js --watch"
   },
   "repository": {
     "type": "git",
@@ -15,5 +18,25 @@
   "bugs": {
     "url": "https://github.com/Valkyr-JS/StashPluginTemplate/issues"
   },
-  "homepage": "https://github.com/Valkyr-JS/StashPluginTemplate#readme"
+  "homepage": "https://github.com/Valkyr-JS/StashPluginTemplate#readme",
+  "dependencies": {
+    "sass": "^1.77.6",
+    "typescript": "^5.5.3"
+  },
+  "devDependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.5.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "@types/react": "^18.3.3",
+    "@types/react-bootstrap": "^0.32.36",
+    "@types/react-dom": "^18.3.0",
+    "copy-webpack-plugin": "^12.0.2",
+    "css-loader": "^7.1.2",
+    "css-minimizer-webpack-plugin": "^7.0.0",
+    "mini-css-extract-plugin": "^2.9.0",
+    "sass-loader": "^14.2.1",
+    "ts-loader": "^9.5.1",
+    "webpack": "^5.92.1",
+    "webpack-cli": "^5.1.4",
+    "webpack-merge": "^6.0.1"
+  }
 }
