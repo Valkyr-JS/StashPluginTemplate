@@ -7,3 +7,8 @@ ui:
     - YourPluginID.js
   css:
     - YourPluginID.css
+settings:
+  enablePlugin:
+    displayName: Enable the plugin
+    description: Toggle the plugin on and off.
+    type: BOOLEAN

@@ -25,9 +25,12 @@ PluginApi.patch.instead(
       },
     });
 
-    // Wait for the data to load before rendering. If you don't need GQL, you
+    // Get library configuration to access the user's plugin settings.
+    const qConfig = GQL.useConfigurationQuery();
+
+    // Wait for all data to load before rendering. If you don't need GQL, you
     // can skip this.
-    if (qScenes.loading) return [];
+    if (qScenes.loading || qConfig.loading) return [];
     console.log("qScenes: ", qScenes);
 
     // Get the title of the most recent scene to use in our custom component. As
@@ -36,6 +39,12 @@ PluginApi.patch.instead(
     const allScenes = qScenes.data.findScenes.scenes;
     const mostRecentScene =
       allScenes[allScenes.length - 1].title ?? "Untitled scene";
+
+    // If the user has toggled the plugin off via the config settings, render
+    // the original component unchanged.
+    if (!qConfig.data.configuration.plugins.YourPluginID.enablePlugin) {
+      return [<Original {...props} />];
+    }
 
     // Return the component
     return [
