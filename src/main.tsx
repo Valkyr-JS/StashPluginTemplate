@@ -4,15 +4,15 @@ import "./styles.scss";
 const { PluginApi } = window;
 const { GQL, React } = PluginApi;
 
-// DUMMY CONTENT - Replace the performer details panel at the top of the
-// performer page with one that has yellow text and an additional component.
+// Replace the performer details panel at the top of the performer page with one
+// that has yellow text and an additional component.
 PluginApi.patch.instead(
   "PerformerDetailsPanel.DetailGroup",
   function (props, _, Original) {
     const performerID = props.performer.id;
 
-    // DUMMY CONTENT - Get all scenes featuring the given performer and log the
-    // data to the console.
+    // Get all scenes featuring the given performer and log the data to the
+    // console.
     const qScenes = GQL.useFindScenesQuery({
       variables: {
         filter: { per_page: -1, sort: "date" },
@@ -30,6 +30,9 @@ PluginApi.patch.instead(
     if (qScenes.loading) return [];
     console.log("qScenes: ", qScenes);
 
+    // Get the title of the most recent scene to use in our custom component. As
+    // the title is not a required field in the Stash database, we need to
+    // provide a fallback.
     const allScenes = qScenes.data.findScenes.scenes;
     const mostRecentScene =
       allScenes[allScenes.length - 1].title ?? "Untitled scene";
