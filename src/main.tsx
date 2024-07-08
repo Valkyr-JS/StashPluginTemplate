@@ -1,4 +1,4 @@
-import MyDetailItem from "./components/MyDataItem";
+import MyDetailItem from "./components/MyDetailItem";
 import "./styles.scss";
 
 const { PluginApi } = window;
