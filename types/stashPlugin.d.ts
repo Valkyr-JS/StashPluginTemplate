@@ -1,9 +1,14 @@
-import type React from "@types/react";
-import type { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import type {
   IconDefinition,
   SizeProp,
 } from "@fortawesome/fontawesome-svg-core";
+import * as FontAwesomeRegular from "@fortawesome/free-regular-svg-icons";
+import * as FontAwesomeSolid from "@fortawesome/free-solid-svg-icons";
+import type { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import type React from "@types/react";
+import type ReactRouterDOM from "@types/react-router-dom";
+import Mousetrap from "mousetrap";
+import * as ReactIntl from "react-intl";
 
 declare global {
   interface Window {
@@ -12,8 +17,12 @@ declare global {
 }
 
 interface IPluginApi {
-  React: React;
-  ReactDOM: typeof ReactDOM;
+  Event: {
+    addEventListener: (
+      event: string,
+      callback: (e: CustomEvent) => void
+    ) => void;
+  };
   GQL: {
     useConfigurationQuery(): {
       data: { configuration: ConfigResult };
@@ -41,6 +50,10 @@ interface IPluginApi {
       data: { findScenes: Query["findScenes"] };
       loading: boolean;
     };
+    useFindStudioQuery(args: { variables: QueryFindStudioArgs }): {
+      data: { findStudio: Query["findStudio"] };
+      loading: boolean;
+    };
     useFindStudiosQuery(args: { variables: QueryFindStudiosArgs }): {
       data: { findStudios: Query["findStudios"] };
       loading: boolean;
@@ -51,46 +64,28 @@ interface IPluginApi {
     };
     useStatsQuery(): { data: { stats: StatsResultType } };
   };
-  Event: {
-    addEventListener: (
-      event: string,
-      callback: (e: CustomEvent) => void
-    ) => void;
-  };
+  React: typeof React;
+  ReactDOM: typeof ReactDOM;
+  components: StashPluginComponents;
+  hooks: any;
   libraries: {
-    ReactRouterDOM: {
-      Link: React.FC<any>;
-      Route: React.FC<any>;
-      NavLink: React.FC<any>;
-    };
-    Bootstrap: {
-      Button: React.FC<any>;
-      Nav: React.FC<any> & {
-        Link: React.FC<any>;
-      };
-    };
-    FontAwesomeSolid: {
-      faBox: any;
-      faEthernet: any;
-      faMars: any;
-      faStar: any;
-      faTansgenderAlt: any;
-      faVenus: any;
-    };
-    Intl: {
-      FormattedMessage: React.FC<any>;
-    };
+    Apollo: any;
+    Bootstrap: typeof ReactBootstrap;
+    FontAwesomeRegular: typeof FontAwesomeSolid;
+    FontAwesomeSolid: typeof FontAwesomeSolid;
+    Intl: typeof ReactIntl;
+    Mousetrap: typeof Mousetrap;
+    MousetrapPause: any;
+    ReactRouterDOM: typeof ReactRouterDOM;
   };
   loadableComponents: any;
-  components: StashPluginComponents;
-  utils: {
-    NavUtils: any;
-    loadComponents: any;
-  };
-  hooks: any;
   patch: PatchableComponents;
   register: {
     route: (path: string, component: React.FC<any>) => void;
+  };
+  utils: {
+    NavUtils: any;
+    loadComponents: any;
   };
 }
 
