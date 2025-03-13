@@ -118,10 +118,12 @@ type BulkGalleryUpdateInput = {
 
 type BulkGroupUpdateInput = {
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
+  containing_groups?: InputMaybe<BulkUpdateGroupDescriptionsInput>;
   director?: InputMaybe<Scalars['String']['input']>;
   ids?: InputMaybe<Array<Scalars['ID']['input']>>;
   rating100?: InputMaybe<Scalars['Int']['input']>;
   studio_id?: InputMaybe<Scalars['ID']['input']>;
+  sub_groups?: InputMaybe<BulkUpdateGroupDescriptionsInput>;
   tag_ids?: InputMaybe<BulkUpdateIds>;
   urls?: InputMaybe<BulkUpdateStrings>;
 };
@@ -162,6 +164,7 @@ type BulkPerformerUpdateInput = {
   circumcised?: InputMaybe<CircumisedEnum>;
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
   country?: InputMaybe<Scalars['String']['input']>;
+  custom_fields?: InputMaybe<CustomFieldsInput>;
   death_date?: InputMaybe<Scalars['String']['input']>;
   details?: InputMaybe<Scalars['String']['input']>;
   disambiguation?: InputMaybe<Scalars['String']['input']>;
@@ -220,6 +223,11 @@ type BulkTagUpdateInput = {
   ids?: InputMaybe<Array<Scalars['ID']['input']>>;
   ignore_auto_tag?: InputMaybe<Scalars['Boolean']['input']>;
   parent_ids?: InputMaybe<BulkUpdateIds>;
+};
+
+type BulkUpdateGroupDescriptionsInput = {
+  groups: Array<GroupDescriptionInput>;
+  mode: BulkUpdateIdMode;
 };
 
 const enum BulkUpdateIdMode {
@@ -755,6 +763,19 @@ const enum CriterionModifier {
   NotNull = 'NOT_NULL'
 };
 
+type CustomFieldCriterionInput = {
+  field: Scalars['String']['input'];
+  modifier: CriterionModifier;
+  value?: InputMaybe<Array<Scalars['Any']['input']>>;
+};
+
+type CustomFieldsInput = {
+  /** If populated, the entire custom fields map will be replaced with this value */
+  full?: InputMaybe<Scalars['Map']['input']>;
+  /** If populated, only the keys in this map will be updated */
+  partial?: InputMaybe<Scalars['Map']['input']>;
+};
+
 type Dlnaip = {
   __typename?: 'DLNAIP';
   ipAddress: Scalars['String']['output'];
@@ -951,8 +972,10 @@ type Gallery = {
   files: Array<GalleryFile>;
   folder?: Maybe<Folder>;
   id: Scalars['ID']['output'];
+  image: Image;
   image_count: Scalars['Int']['output'];
   organized: Scalars['Boolean']['output'];
+  paths: GalleryPathsType;
   performers: Array<Performer>;
   photographer?: Maybe<Scalars['String']['output']>;
   rating100?: Maybe<Scalars['Int']['output']>;
@@ -964,6 +987,12 @@ type Gallery = {
   /** @deprecated Use urls */
   url?: Maybe<Scalars['String']['output']>;
   urls: Array<Scalars['String']['output']>;
+};
+
+
+/** Gallery type */
+type GalleryImageArgs = {
+  index: Scalars['Int']['input'];
 };
 
 type GalleryAddInput = {
@@ -1110,9 +1139,24 @@ type GalleryFilterType = {
   url?: InputMaybe<StringCriterionInput>;
 };
 
+type GalleryPathsType = {
+  __typename?: 'GalleryPathsType';
+  cover: Scalars['String']['output'];
+  preview: Scalars['String']['output'];
+};
+
 type GalleryRemoveInput = {
   gallery_id: Scalars['ID']['input'];
   image_ids: Array<Scalars['ID']['input']>;
+};
+
+type GalleryResetCoverInput = {
+  gallery_id: Scalars['ID']['input'];
+};
+
+type GallerySetCoverInput = {
+  cover_image_id: Scalars['ID']['input'];
+  gallery_id: Scalars['ID']['input'];
 };
 
 type GalleryUpdateInput = {
@@ -1226,6 +1270,7 @@ type Group = {
   __typename?: 'Group';
   aliases?: Maybe<Scalars['String']['output']>;
   back_image_path?: Maybe<Scalars['String']['output']>;
+  containing_groups: Array<GroupDescription>;
   created_at: Scalars['Time']['output'];
   date?: Maybe<Scalars['String']['output']>;
   director?: Maybe<Scalars['String']['output']>;
@@ -1238,16 +1283,29 @@ type Group = {
   scene_count: Scalars['Int']['output'];
   scenes: Array<Scene>;
   studio?: Maybe<Studio>;
+  sub_group_count: Scalars['Int']['output'];
+  sub_groups: Array<GroupDescription>;
   synopsis?: Maybe<Scalars['String']['output']>;
   tags: Array<Tag>;
   updated_at: Scalars['Time']['output'];
   urls: Array<Scalars['String']['output']>;
 };
 
+
+type GroupScene_CountArgs = {
+  depth?: InputMaybe<Scalars['Int']['input']>;
+};
+
+
+type GroupSub_Group_CountArgs = {
+  depth?: InputMaybe<Scalars['Int']['input']>;
+};
+
 type GroupCreateInput = {
   aliases?: InputMaybe<Scalars['String']['input']>;
   /** This should be a URL or a base64 encoded data URL */
   back_image?: InputMaybe<Scalars['String']['input']>;
+  containing_groups?: InputMaybe<Array<GroupDescriptionInput>>;
   date?: InputMaybe<Scalars['String']['input']>;
   director?: InputMaybe<Scalars['String']['input']>;
   /** Duration in seconds */
@@ -1257,9 +1315,22 @@ type GroupCreateInput = {
   name: Scalars['String']['input'];
   rating100?: InputMaybe<Scalars['Int']['input']>;
   studio_id?: InputMaybe<Scalars['ID']['input']>;
+  sub_groups?: InputMaybe<Array<GroupDescriptionInput>>;
   synopsis?: InputMaybe<Scalars['String']['input']>;
   tag_ids?: InputMaybe<Array<Scalars['ID']['input']>>;
   urls?: InputMaybe<Array<Scalars['String']['input']>>;
+};
+
+/** GroupDescription represents a relationship to a group with a description of the relationship */
+type GroupDescription = {
+  __typename?: 'GroupDescription';
+  description?: Maybe<Scalars['String']['output']>;
+  group: Group;
+};
+
+type GroupDescriptionInput = {
+  description?: InputMaybe<Scalars['String']['input']>;
+  group_id: Scalars['ID']['input'];
 };
 
 type GroupDestroyInput = {
@@ -1270,6 +1341,10 @@ type GroupFilterType = {
   AND?: InputMaybe<GroupFilterType>;
   NOT?: InputMaybe<GroupFilterType>;
   OR?: InputMaybe<GroupFilterType>;
+  /** Filter by number of containing groups the group has */
+  containing_group_count?: InputMaybe<IntCriterionInput>;
+  /** Filter by containing groups */
+  containing_groups?: InputMaybe<HierarchicalMultiCriterionInput>;
   /** Filter by creation time */
   created_at?: InputMaybe<TimestampCriterionInput>;
   /** Filter by date */
@@ -1289,6 +1364,10 @@ type GroupFilterType = {
   studios?: InputMaybe<HierarchicalMultiCriterionInput>;
   /** Filter by related studios that meet this criteria */
   studios_filter?: InputMaybe<StudioFilterType>;
+  /** Filter by number of sub-groups the group has */
+  sub_group_count?: InputMaybe<IntCriterionInput>;
+  /** Filter by sub groups */
+  sub_groups?: InputMaybe<HierarchicalMultiCriterionInput>;
   synopsis?: InputMaybe<StringCriterionInput>;
   /** Filter by tag count */
   tag_count?: InputMaybe<IntCriterionInput>;
@@ -1300,10 +1379,23 @@ type GroupFilterType = {
   url?: InputMaybe<StringCriterionInput>;
 };
 
+type GroupSubGroupAddInput = {
+  containing_group_id: Scalars['ID']['input'];
+  /** The index at which to insert the sub groups. If not provided, the sub groups will be appended to the end */
+  insert_index?: InputMaybe<Scalars['Int']['input']>;
+  sub_groups: Array<GroupDescriptionInput>;
+};
+
+type GroupSubGroupRemoveInput = {
+  containing_group_id: Scalars['ID']['input'];
+  sub_group_ids: Array<Scalars['ID']['input']>;
+};
+
 type GroupUpdateInput = {
   aliases?: InputMaybe<Scalars['String']['input']>;
   /** This should be a URL or a base64 encoded data URL */
   back_image?: InputMaybe<Scalars['String']['input']>;
+  containing_groups?: InputMaybe<Array<GroupDescriptionInput>>;
   date?: InputMaybe<Scalars['String']['input']>;
   director?: InputMaybe<Scalars['String']['input']>;
   duration?: InputMaybe<Scalars['Int']['input']>;
@@ -1313,6 +1405,7 @@ type GroupUpdateInput = {
   name?: InputMaybe<Scalars['String']['input']>;
   rating100?: InputMaybe<Scalars['Int']['input']>;
   studio_id?: InputMaybe<Scalars['ID']['input']>;
+  sub_groups?: InputMaybe<Array<GroupDescriptionInput>>;
   synopsis?: InputMaybe<Scalars['String']['input']>;
   tag_ids?: InputMaybe<Array<Scalars['ID']['input']>>;
   urls?: InputMaybe<Array<Scalars['String']['input']>>;
@@ -1744,6 +1837,11 @@ type Movie = {
   urls: Array<Scalars['String']['output']>;
 };
 
+
+type MovieScene_CountArgs = {
+  depth?: InputMaybe<Scalars['Int']['input']>;
+};
+
 type MovieCreateInput = {
   aliases?: InputMaybe<Scalars['String']['input']>;
   /** This should be a URL or a base64 encoded data URL */
@@ -1831,6 +1929,7 @@ type MultiCriterionInput = {
 type Mutation = {
   __typename?: 'Mutation';
   addGalleryImages: Scalars['Boolean']['output'];
+  addGroupSubGroups: Scalars['Boolean']['output'];
   /** Enables an IP address for DLNA for an optional duration */
   addTempDLNAIP: Scalars['Boolean']['output'];
   /** Anonymise the database in a separate file. Optionally returns a link to download the database file */
@@ -1963,8 +2062,12 @@ type Mutation = {
   /** Reload scrapers */
   reloadScrapers: Scalars['Boolean']['output'];
   removeGalleryImages: Scalars['Boolean']['output'];
+  removeGroupSubGroups: Scalars['Boolean']['output'];
   /** Removes an IP address from the temporary DLNA whitelist */
   removeTempDLNAIP: Scalars['Boolean']['output'];
+  /** Reorder sub groups within a group. Returns true if successful. */
+  reorderSubGroups: Scalars['Boolean']['output'];
+  resetGalleryCover: Scalars['Boolean']['output'];
   /**
    * Runs a plugin operation. The operation is run immediately and does not use the job queue.
    * Returns a map of the result.
@@ -2010,7 +2113,10 @@ type Mutation = {
   sceneMarkerCreate?: Maybe<SceneMarker>;
   sceneMarkerDestroy: Scalars['Boolean']['output'];
   sceneMarkerUpdate?: Maybe<SceneMarker>;
+  sceneMarkersDestroy: Scalars['Boolean']['output'];
   sceneMerge?: Maybe<Scene>;
+  /** Resets the resume time point and play duration */
+  sceneResetActivity: Scalars['Boolean']['output'];
   /** Resets the o-counter for a scene to 0. Returns the new value */
   sceneResetO: Scalars['Int']['output'];
   /** Resets the play count for a scene to 0. Returns the new play count value. */
@@ -2022,6 +2128,7 @@ type Mutation = {
   scenesUpdate?: Maybe<Array<Maybe<Scene>>>;
   /** @deprecated now uses UI config */
   setDefaultFilter: Scalars['Boolean']['output'];
+  setGalleryCover: Scalars['Boolean']['output'];
   /**
    * Enable/disable plugins - enabledMap is a map of plugin IDs to enabled booleans.
    * Plugins not in the map are not affected.
@@ -2069,6 +2176,11 @@ type Mutation = {
 
 type MutationAddGalleryImagesArgs = {
   input: GalleryAddInput;
+};
+
+
+type MutationAddGroupSubGroupsArgs = {
+  input: GroupSubGroupAddInput;
 };
 
 
@@ -2408,8 +2520,23 @@ type MutationRemoveGalleryImagesArgs = {
 };
 
 
+type MutationRemoveGroupSubGroupsArgs = {
+  input: GroupSubGroupRemoveInput;
+};
+
+
 type MutationRemoveTempDlnaipArgs = {
   input: RemoveTempDlnaipInput;
+};
+
+
+type MutationReorderSubGroupsArgs = {
+  input: ReorderSubGroupsInput;
+};
+
+
+type MutationResetGalleryCoverArgs = {
+  input: GalleryResetCoverInput;
 };
 
 
@@ -2508,8 +2635,20 @@ type MutationSceneMarkerUpdateArgs = {
 };
 
 
+type MutationSceneMarkersDestroyArgs = {
+  ids: Array<Scalars['ID']['input']>;
+};
+
+
 type MutationSceneMergeArgs = {
   input: SceneMergeInput;
+};
+
+
+type MutationSceneResetActivityArgs = {
+  id: Scalars['ID']['input'];
+  reset_duration?: InputMaybe<Scalars['Boolean']['input']>;
+  reset_resume?: InputMaybe<Scalars['Boolean']['input']>;
 };
 
 
@@ -2547,6 +2686,11 @@ type MutationScenesUpdateArgs = {
 
 type MutationSetDefaultFilterArgs = {
   input: SetDefaultFilterInput;
+};
+
+
+type MutationSetGalleryCoverArgs = {
+  input: GallerySetCoverInput;
 };
 
 
@@ -2709,6 +2853,7 @@ type Performer = {
   circumcised?: Maybe<CircumisedEnum>;
   country?: Maybe<Scalars['String']['output']>;
   created_at: Scalars['Time']['output'];
+  custom_fields: Scalars['Map']['output'];
   death_date?: Maybe<Scalars['String']['output']>;
   details?: Maybe<Scalars['String']['output']>;
   disambiguation?: Maybe<Scalars['String']['output']>;
@@ -2719,7 +2864,6 @@ type Performer = {
   gallery_count: Scalars['Int']['output'];
   gender?: Maybe<GenderEnum>;
   group_count: Scalars['Int']['output'];
-  /** @deprecated use groups instead */
   groups: Array<Group>;
   hair_color?: Maybe<Scalars['String']['output']>;
   height_cm?: Maybe<Scalars['Int']['output']>;
@@ -2760,6 +2904,7 @@ type PerformerCreateInput = {
   career_length?: InputMaybe<Scalars['String']['input']>;
   circumcised?: InputMaybe<CircumisedEnum>;
   country?: InputMaybe<Scalars['String']['input']>;
+  custom_fields?: InputMaybe<Scalars['Map']['input']>;
   death_date?: InputMaybe<Scalars['String']['input']>;
   details?: InputMaybe<Scalars['String']['input']>;
   disambiguation?: InputMaybe<Scalars['String']['input']>;
@@ -2815,6 +2960,7 @@ type PerformerFilterType = {
   country?: InputMaybe<StringCriterionInput>;
   /** Filter by creation time */
   created_at?: InputMaybe<TimestampCriterionInput>;
+  custom_fields?: InputMaybe<Array<CustomFieldCriterionInput>>;
   /** Filter by death date */
   death_date?: InputMaybe<DateCriterionInput>;
   /** Filter by death year */
@@ -2891,6 +3037,7 @@ type PerformerUpdateInput = {
   career_length?: InputMaybe<Scalars['String']['input']>;
   circumcised?: InputMaybe<CircumisedEnum>;
   country?: InputMaybe<Scalars['String']['input']>;
+  custom_fields?: InputMaybe<CustomFieldsInput>;
   death_date?: InputMaybe<Scalars['String']['input']>;
   details?: InputMaybe<Scalars['String']['input']>;
   disambiguation?: InputMaybe<Scalars['String']['input']>;
@@ -3118,6 +3265,8 @@ type Query = {
   scrapeGalleryURL?: Maybe<ScrapedGallery>;
   /** Scrapes a complete group record based on a URL */
   scrapeGroupURL?: Maybe<ScrapedGroup>;
+  /** Scrapes a complete image record based on a URL */
+  scrapeImageURL?: Maybe<ScrapedImage>;
   /**
    * Scrapes a complete movie record based on a URL
    * @deprecated Use scrapeGroupURL instead
@@ -3135,6 +3284,8 @@ type Query = {
   scrapeSingleGallery: Array<ScrapedGallery>;
   /** Scrape for a single group */
   scrapeSingleGroup: Array<ScrapedGroup>;
+  /** Scrape for a single image */
+  scrapeSingleImage: Array<ScrapedImage>;
   /**
    * Scrape for a single movie
    * @deprecated Use scrapeSingleGroup instead
@@ -3290,6 +3441,7 @@ type QueryFindSceneByHashArgs = {
 /** The query root for this schema */
 type QueryFindSceneMarkersArgs = {
   filter?: InputMaybe<FindFilterType>;
+  ids?: InputMaybe<Array<Scalars['ID']['input']>>;
   scene_marker_filter?: InputMaybe<SceneMarkerFilterType>;
 };
 
@@ -3400,6 +3552,12 @@ type QueryScrapeGroupUrlArgs = {
 
 
 /** The query root for this schema */
+type QueryScrapeImageUrlArgs = {
+  url: Scalars['String']['input'];
+};
+
+
+/** The query root for this schema */
 type QueryScrapeMovieUrlArgs = {
   url: Scalars['String']['input'];
 };
@@ -3446,6 +3604,13 @@ type QueryScrapeSingleGroupArgs = {
 
 
 /** The query root for this schema */
+type QueryScrapeSingleImageArgs = {
+  input: ScrapeSingleImageInput;
+  source: ScraperSourceInput;
+};
+
+
+/** The query root for this schema */
 type QueryScrapeSingleMovieArgs = {
   input: ScrapeSingleMovieInput;
   source: ScraperSourceInput;
@@ -3487,6 +3652,20 @@ type QueryValidateStashBoxCredentialsArgs = {
 
 type RemoveTempDlnaipInput = {
   address: Scalars['String']['input'];
+};
+
+type ReorderSubGroupsInput = {
+  /** ID of the group to reorder sub groups for */
+  group_id: Scalars['ID']['input'];
+  /** If true, the sub groups will be inserted after the insert_index, otherwise they will be inserted before */
+  insert_after?: InputMaybe<Scalars['Boolean']['input']>;
+  /** The sub-group ID at which to insert the sub groups */
+  insert_at_id: Scalars['ID']['input'];
+  /**
+   * IDs of the sub groups to reorder. These must be a subset of the current sub groups.
+   * Sub groups will be inserted in this order at the insert_index
+   */
+  sub_group_ids: Array<Scalars['ID']['input']>;
 };
 
 type ResolutionCriterionInput = {
@@ -3761,7 +3940,7 @@ type SceneFilterType = {
   /** Filter by related galleries that meet this criteria */
   galleries_filter?: InputMaybe<GalleryFilterType>;
   /** Filter to only include scenes with this group */
-  groups?: InputMaybe<MultiCriterionInput>;
+  groups?: InputMaybe<HierarchicalMultiCriterionInput>;
   /** Filter by related groups that meet this criteria */
   groups_filter?: InputMaybe<GroupFilterType>;
   /** Filter to only include scenes which have markers. `true` or `false` */
@@ -3865,6 +4044,8 @@ type SceneHashInput = {
 type SceneMarker = {
   __typename?: 'SceneMarker';
   created_at: Scalars['Time']['output'];
+  /** The optional end time of the marker (in seconds). Supports decimals. */
+  end_seconds?: Maybe<Scalars['Float']['output']>;
   id: Scalars['ID']['output'];
   /** The path to the preview image for this marker */
   preview: Scalars['String']['output'];
@@ -3872,6 +4053,7 @@ type SceneMarker = {
   scene: Scene;
   /** The path to the screenshot image for this marker */
   screenshot: Scalars['String']['output'];
+  /** The required start time of the marker (in seconds). Supports decimals. */
   seconds: Scalars['Float']['output'];
   /** The path to stream this marker */
   stream: Scalars['String']['output'];
@@ -3881,8 +4063,11 @@ type SceneMarker = {
 };
 
 type SceneMarkerCreateInput = {
+  /** The optional end time of the marker (in seconds). Supports decimals. */
+  end_seconds?: InputMaybe<Scalars['Float']['input']>;
   primary_tag_id: Scalars['ID']['input'];
   scene_id: Scalars['ID']['input'];
+  /** The required start time of the marker (in seconds). Supports decimals. */
   seconds: Scalars['Float']['input'];
   tag_ids?: InputMaybe<Array<Scalars['ID']['input']>>;
   title: Scalars['String']['input'];
@@ -3891,6 +4076,8 @@ type SceneMarkerCreateInput = {
 type SceneMarkerFilterType = {
   /** Filter by creation time */
   created_at?: InputMaybe<TimestampCriterionInput>;
+  /** Filter by duration (in seconds) */
+  duration?: InputMaybe<FloatCriterionInput>;
   /** Filter to only include scene markers with these performers */
   performers?: InputMaybe<MultiCriterionInput>;
   /** Filter by cscene reation time */
@@ -3903,6 +4090,8 @@ type SceneMarkerFilterType = {
   scene_tags?: InputMaybe<HierarchicalMultiCriterionInput>;
   /** Filter by lscene ast update time */
   scene_updated_at?: InputMaybe<TimestampCriterionInput>;
+  /** Filter to only include scene markers from these scenes */
+  scenes?: InputMaybe<MultiCriterionInput>;
   /** Filter to only include scene markers with these tags */
   tags?: InputMaybe<HierarchicalMultiCriterionInput>;
   /** Filter by last update time */
@@ -3916,9 +4105,12 @@ type SceneMarkerTag = {
 };
 
 type SceneMarkerUpdateInput = {
+  /** The end time of the marker (in seconds). Supports decimals. */
+  end_seconds?: InputMaybe<Scalars['Float']['input']>;
   id: Scalars['ID']['input'];
   primary_tag_id?: InputMaybe<Scalars['ID']['input']>;
   scene_id?: InputMaybe<Scalars['ID']['input']>;
+  /** The start time of the marker (in seconds). Supports decimals. */
   seconds?: InputMaybe<Scalars['Float']['input']>;
   tag_ids?: InputMaybe<Array<Scalars['ID']['input']>>;
   title?: InputMaybe<Scalars['String']['input']>;
@@ -4052,6 +4244,7 @@ type ScenesDestroyInput = {
 const enum ScrapeContentType {
   Gallery = 'GALLERY',
   Group = 'GROUP',
+  Image = 'IMAGE',
   Movie = 'MOVIE',
   Performer = 'PERFORMER',
   Scene = 'SCENE'
@@ -4081,6 +4274,15 @@ type ScrapeSingleGroupInput = {
   group_id?: InputMaybe<Scalars['ID']['input']>;
   /** Instructs to query by group fragment */
   group_input?: InputMaybe<ScrapedGroupInput>;
+  /** Instructs to query by string */
+  query?: InputMaybe<Scalars['String']['input']>;
+};
+
+type ScrapeSingleImageInput = {
+  /** Instructs to query by image id */
+  image_id?: InputMaybe<Scalars['ID']['input']>;
+  /** Instructs to query by image fragment */
+  image_input?: InputMaybe<ScrapedImageInput>;
   /** Instructs to query by string */
   query?: InputMaybe<Scalars['String']['input']>;
 };
@@ -4127,7 +4329,7 @@ const enum ScrapeType {
 };
 
 /** Scraped Content is the forming union over the different scrapers */
-type ScrapedContent = ScrapedGallery | ScrapedGroup | ScrapedMovie | ScrapedPerformer | ScrapedScene | ScrapedStudio | ScrapedTag;
+type ScrapedContent = ScrapedGallery | ScrapedGroup | ScrapedImage | ScrapedMovie | ScrapedPerformer | ScrapedScene | ScrapedStudio | ScrapedTag;
 
 type ScrapedGallery = {
   __typename?: 'ScrapedGallery';
@@ -4183,6 +4385,27 @@ type ScrapedGroupInput = {
   name?: InputMaybe<Scalars['String']['input']>;
   rating?: InputMaybe<Scalars['String']['input']>;
   synopsis?: InputMaybe<Scalars['String']['input']>;
+  urls?: InputMaybe<Array<Scalars['String']['input']>>;
+};
+
+type ScrapedImage = {
+  __typename?: 'ScrapedImage';
+  code?: Maybe<Scalars['String']['output']>;
+  date?: Maybe<Scalars['String']['output']>;
+  details?: Maybe<Scalars['String']['output']>;
+  performers?: Maybe<Array<ScrapedPerformer>>;
+  photographer?: Maybe<Scalars['String']['output']>;
+  studio?: Maybe<ScrapedStudio>;
+  tags?: Maybe<Array<ScrapedTag>>;
+  title?: Maybe<Scalars['String']['output']>;
+  urls?: Maybe<Array<Scalars['String']['output']>>;
+};
+
+type ScrapedImageInput = {
+  code?: InputMaybe<Scalars['String']['input']>;
+  date?: InputMaybe<Scalars['String']['input']>;
+  details?: InputMaybe<Scalars['String']['input']>;
+  title?: InputMaybe<Scalars['String']['input']>;
   urls?: InputMaybe<Array<Scalars['String']['input']>>;
 };
 
@@ -4357,6 +4580,8 @@ type Scraper = {
   /** Details for group scraper */
   group?: Maybe<ScraperSpec>;
   id: Scalars['ID']['output'];
+  /** Details for image scraper */
+  image?: Maybe<ScraperSpec>;
   /**
    * Details for movie scraper
    * @deprecated use group
@@ -4558,6 +4783,7 @@ type StashId = {
   __typename?: 'StashID';
   endpoint: Scalars['String']['output'];
   stash_id: Scalars['String']['output'];
+  updated_at: Scalars['Time']['output'];
 };
 
 type StashIdCriterionInput = {
@@ -4573,6 +4799,7 @@ type StashIdCriterionInput = {
 type StashIdInput = {
   endpoint: Scalars['String']['input'];
   stash_id: Scalars['String']['input'];
+  updated_at?: InputMaybe<Scalars['Time']['input']>;
 };
 
 type StatsResultType = {
@@ -4804,6 +5031,8 @@ type Tag = {
   performer_count: Scalars['Int']['output'];
   scene_count: Scalars['Int']['output'];
   scene_marker_count: Scalars['Int']['output'];
+  /** Value that does not appear in the UI but overrides name for sorting */
+  sort_name?: Maybe<Scalars['String']['output']>;
   studio_count: Scalars['Int']['output'];
   updated_at: Scalars['Time']['output'];
 };
@@ -4858,6 +5087,8 @@ type TagCreateInput = {
   image?: InputMaybe<Scalars['String']['input']>;
   name: Scalars['String']['input'];
   parent_ids?: InputMaybe<Array<Scalars['ID']['input']>>;
+  /** Value that does not appear in the UI but overrides name for sorting */
+  sort_name?: InputMaybe<Scalars['String']['input']>;
 };
 
 type TagDestroyInput = {
@@ -4910,6 +5141,8 @@ type TagFilterType = {
   scene_count?: InputMaybe<IntCriterionInput>;
   /** Filter by related scenes that meet this criteria */
   scenes_filter?: InputMaybe<SceneFilterType>;
+  /** Filter by tag sort_name */
+  sort_name?: InputMaybe<StringCriterionInput>;
   /** Filter by number of studios with this tag */
   studio_count?: InputMaybe<IntCriterionInput>;
   /** Filter by last update time */
@@ -4927,6 +5160,8 @@ type TagUpdateInput = {
   image?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   parent_ids?: InputMaybe<Array<Scalars['ID']['input']>>;
+  /** Value that does not appear in the UI but overrides name for sorting */
+  sort_name?: InputMaybe<Scalars['String']['input']>;
 };
 
 type TagsMergeInput = {
