@@ -6,9 +6,19 @@ import typescript from "@rollup/plugin-typescript";
 // any Javascript or CSS files referenced in `./src/source.yml`.
 const pluginID = "YourPluginID";
 
+const banner = `window.require = function(name) {
+    switch (name) {
+        case "react":
+            return window.PluginApi.React
+        case "react-dom":
+            return window.PluginApi.ReactDOM
+    }
+}`;
+
 export default {
   input: "src/main.tsx",
   output: {
+    banner,
     file: "dist/" + pluginID + ".js",
     format: "cjs",
   },
