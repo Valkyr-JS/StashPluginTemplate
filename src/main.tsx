@@ -43,7 +43,7 @@ PluginApi.patch.instead(
 
     // If the user has toggled the plugin off via the config settings, render
     // the original component unchanged.
-    if (!qConfig.data.configuration.plugins.YourPluginID?.enablePlugin) {
+    if (!qConfig.data.configuration.plugins.stashplugintemplate?.enablePlugin) {
       return [<Original {...props} />];
     }
 
