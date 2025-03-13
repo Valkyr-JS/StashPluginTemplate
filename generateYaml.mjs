@@ -7,7 +7,7 @@ const filename =  pkg.default.name + ".yml"
 
 // Only import the entry file. If you there are multiple entrypoints, you'll
 // need to list them all here. 
-const jsFiles = [pkg.default.name + "js"]
+const jsFiles = [pkg.default.name + ".js"]
 
 // Check if CSS has been generated
 const cssFiles = []
