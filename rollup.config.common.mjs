@@ -18,12 +18,22 @@ const banner = `window.require = function(name) {
             return window.PluginApi.libraries.FontAwesomeRegular
         case "@fortawesome/free-solid-svg-icons":
             return window.PluginApi.libraries.FontAwesomeSolid
+        case "mousetrap":
+            return window.PluginApi.libraries.Mousetrap
+        case "mousetrap-pause":
+            return window.PluginApi.libraries.MousetrapPause
         case "react":
             return window.PluginApi.React
         case "react-bootstrap":
             return window.PluginApi.libraries.Bootstrap
         case "react-dom":
             return window.PluginApi.ReactDOM
+        case "react-intl":
+            return window.PluginApi.libraries.Intl
+        case "react-router-dom":
+            return window.PluginApi.libraries.ReactRouterDOM
+        case "react-select":
+            return window.PluginApi.libraries.ReactSelect
     }
 }`;
 

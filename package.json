@@ -24,9 +24,14 @@
     "@apollo/client": "^3.13.4",
     "@fortawesome/free-regular-svg-icons": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "mousetrap": "^1.6.5",
+    "mousetrap-pause": "^1.0.0",
     "react": "^17.0.2",
     "react-bootstrap": "^1.6.8",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "react-intl": "^6.8.9",
+    "react-router-dom": "^5.3.4",
+    "react-select": "^5.10.1"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.3",
