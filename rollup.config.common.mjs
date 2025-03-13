@@ -12,6 +12,8 @@ const pluginID = pkg.default.name;
 // Replace require imports with Plugin API library references
 const banner = `window.require = function(name) {
     switch (name) {
+        case "@apollo/client":
+            return window.PluginApi.libraries.Apollo
         case "react":
             return window.PluginApi.React
         case "react-bootstrap":
