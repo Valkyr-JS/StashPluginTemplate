@@ -6,6 +6,7 @@
   "type": "commonjs",
   "scripts": {
     "build": "rollup --config ./rollup.config.prod.mjs && node generateYaml.mjs",
+    "build:yaml": "node generateYaml.mjs",
     "dev": "rollup --config ./rollup.config.dev.mjs && node generateYaml.mjs",
     "start": "npm run watch",
     "watch": "rollup --config ./rollup.config.dev.mjs --watch"
