@@ -1,12 +1,12 @@
-name: Your Plugin Name
+name: stashplugintemplate
 description: A description of your plugin, shown in the plugin settings page.
 url: https://github.com/Your/Respository
 version: 0.1.0
 ui:
   javascript:
-    - YourPluginID.js
+    - stashplugintemplate.js
   css:
-    - YourPluginID.css
+    - stashplugintemplate.css
 settings:
   enablePlugin:
     displayName: Enable the plugin
