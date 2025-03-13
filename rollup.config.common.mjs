@@ -1,14 +1,13 @@
 import commonjs from "@rollup/plugin-commonjs";
 import copy from "rollup-plugin-copy";
+import del from "rollup-plugin-delete";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
 import peerDepsExternal from "rollup-plugin-peer-deps-external";
 import replace from "@rollup/plugin-replace";
-import scss from "rollup-plugin-scss";
 import typescript from "@rollup/plugin-typescript";
+import * as pkg from "./package.json" with { type: "json" };
 
-// ! Change this to the your unique plugin ID. This must match the name given to
-// any Javascript or CSS files referenced in `./src/source.yml`.
-const pluginID = "YourPluginID";
+const pluginID = pkg.default.name;
 
 // Replace require imports with Plugin API library references
 const banner = `window.require = function(name) {
@@ -34,13 +33,13 @@ export default {
         { src: "src/source.yml", dest: "dist", rename: pluginID + ".yml" },
       ],
     }),
+    del({ targets: "dist" }),
     nodeResolve(),
     peerDepsExternal(),
     replace({
       preventAssignment: true,
       "process.env.NODE_ENV": JSON.stringify("production"),
     }),
-    scss({ fileName: pluginID + ".css" }),
     typescript(),
   ],
 };
