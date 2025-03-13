@@ -10,6 +10,13 @@ It's unlikely that any of the configurations need to be changed for the majority
 
 Your plugin settings are written in the `src/components/settings.json`. This is converted to YAML as part of the bundling process.
 
+## Using the Plugin API
+
+The Stash plugin API can be accessed via `window.pluginApi` (see `src/main.tsx` for an example). The API exposes several libraries used by Stash, which are referenced as peer dependencies by this template. They can be imported into your files as normal, but will not be bundled into the plugin in order to reduce output size and avoid conflicts.
+
+### Font Awesome
+The free regular and solid Font Awesome libraries are accessible via the plugin API, but `@fortawesome/react-fontawesome` is not. Instead, the `FontAwesomeIcon` component is accessible as `FontAwesomeIcon = window.pluginApi.components.Icon` - the package does not need to be installed.
+
 ## Scripts
 
 | Script       | Description                                                           |
