@@ -14,6 +14,8 @@ const banner = `window.require = function(name) {
     switch (name) {
         case "react":
             return window.PluginApi.React
+        case "react-bootstrap":
+            return window.PluginApi.libraries.Bootstrap
         case "react-dom":
             return window.PluginApi.ReactDOM
     }
