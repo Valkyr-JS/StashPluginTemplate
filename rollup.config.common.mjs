@@ -14,6 +14,10 @@ const banner = `window.require = function(name) {
     switch (name) {
         case "@apollo/client":
             return window.PluginApi.libraries.Apollo
+        case "@fortawesome/free-regular-svg-icons":
+            return window.PluginApi.libraries.FontAwesomeRegular
+        case "@fortawesome/free-solid-svg-icons":
+            return window.PluginApi.libraries.FontAwesomeSolid
         case "react":
             return window.PluginApi.React
         case "react-bootstrap":
