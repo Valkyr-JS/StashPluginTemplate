@@ -5,8 +5,8 @@
   "main": "./src/main.ts",
   "type": "commonjs",
   "scripts": {
-    "build": "rollup --config ./rollup.config.prod.mjs",
-    "dev": "rollup --config ./rollup.config.dev.mjs",
+    "build": "rollup --config ./rollup.config.prod.mjs && node generateYaml.mjs",
+    "dev": "rollup --config ./rollup.config.dev.mjs && node generateYaml.mjs",
     "start": "npm run watch",
     "watch": "rollup --config ./rollup.config.dev.mjs --watch"
   },
@@ -51,6 +51,7 @@
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.2",
     "sass": "^1.85.1",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.2",
+    "write-yaml-file": "^5.0.0"
   }
 }
