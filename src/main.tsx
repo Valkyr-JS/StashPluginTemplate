@@ -1,8 +1,9 @@
+import React from "react";
 import MyDetailItem from "./components/MyDetailItem";
 import "./styles.scss";
 
 const { PluginApi } = window;
-const { GQL, React } = PluginApi;
+const { GQL } = PluginApi;
 
 // Replace the performer details panel at the top of the performer page with one
 // that has yellow text and an additional component.
@@ -42,7 +43,7 @@ PluginApi.patch.instead(
 
     // If the user has toggled the plugin off via the config settings, render
     // the original component unchanged.
-    if (!qConfig.data.configuration.plugins.YourPluginID?.enablePlugin) {
+    if (!qConfig.data.configuration.plugins.stashplugintemplate?.enablePlugin) {
       return [<Original {...props} />];
     }
 

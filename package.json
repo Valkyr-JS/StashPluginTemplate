@@ -3,11 +3,13 @@
   "version": "0.1.0",
   "description": "A template for creating plugins for Stash using the native plugin API.",
   "main": "./src/main.ts",
+  "type": "commonjs",
   "scripts": {
-    "build": "webpack --config webpack.prod.js",
-    "dev": "webpack --config webpack.dev.js",
+    "build": "rollup --config ./rollup.config.prod.mjs && node generateYaml.mjs",
+    "build:yaml": "node generateYaml.mjs",
+    "dev": "rollup --config ./rollup.config.dev.mjs && node generateYaml.mjs",
     "start": "npm run watch",
-    "watch": "webpack --config webpack.dev.js --watch"
+    "watch": "rollup --config ./rollup.config.dev.mjs --watch"
   },
   "repository": {
     "type": "git",
@@ -19,29 +21,38 @@
     "url": "https://github.com/Valkyr-JS/StashPluginTemplate/issues"
   },
   "homepage": "https://github.com/Valkyr-JS/StashPluginTemplate#readme",
-  "dependencies": {
-    "react-intl": "^6.6.8",
-    "sass": "^1.77.6",
-    "typescript": "^5.5.3"
+  "peerDependencies": {
+    "@apollo/client": "^3.13.4",
+    "@fortawesome/free-regular-svg-icons": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "mousetrap": "^1.6.5",
+    "mousetrap-pause": "^1.0.0",
+    "react": "^17.0.2",
+    "react-bootstrap": "^1.6.8",
+    "react-dom": "^17.0.2",
+    "react-intl": "^6.8.9",
+    "react-router-dom": "^5.3.4",
+    "react-select": "^5.10.1"
   },
   "devDependencies": {
-    "@fortawesome/fontawesome-svg-core": "^6.5.2",
-    "@fortawesome/free-regular-svg-icons": "^6.6.0",
-    "@fortawesome/free-solid-svg-icons": "^6.6.0",
-    "@fortawesome/react-fontawesome": "^0.2.2",
+    "@rollup/plugin-commonjs": "^28.0.3",
+    "@rollup/plugin-node-resolve": "^16.0.1",
+    "@rollup/plugin-replace": "^6.0.2",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^12.1.2",
     "@types/mousetrap": "^1.6.15",
     "@types/react": "^18.3.3",
     "@types/react-bootstrap": "^0.32.36",
     "@types/react-dom": "^18.3.0",
     "@types/react-router-dom": "^5.3.3",
-    "copy-webpack-plugin": "^12.0.2",
-    "css-loader": "^7.1.2",
-    "css-minimizer-webpack-plugin": "^7.0.0",
-    "mini-css-extract-plugin": "^2.9.0",
-    "sass-loader": "^14.2.1",
-    "ts-loader": "^9.5.1",
-    "webpack": "^5.92.1",
-    "webpack-cli": "^5.1.4",
-    "webpack-merge": "^6.0.1"
+    "postcss": "^8.5.3",
+    "rollup": "^4.35.0",
+    "rollup-plugin-copy": "^3.5.0",
+    "rollup-plugin-delete": "^3.0.1",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
+    "rollup-plugin-postcss": "^4.0.2",
+    "sass": "^1.85.1",
+    "typescript": "^5.8.2",
+    "write-yaml-file": "^5.0.0"
   }
 }

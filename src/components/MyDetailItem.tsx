@@ -1,4 +1,4 @@
-const { React } = window.PluginApi;
+import React from "react";
 
 const MyDetailItem: React.FC<IMyDetailItem> = (props) => {
   const itemClassname = props.title.split(" ").join("").toLowerCase();
