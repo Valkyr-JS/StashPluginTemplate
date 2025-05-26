@@ -93,11 +93,16 @@ interface IPluginApi {
 /* -------------------------------------------------------------------------- */
 
 interface StashPluginComponents {
+  BooleanSetting?: (props: IBooleanSetting) => React.JSX.Element;
   HoverPopover: (props: IHoverPopover) => React.JSX.Element;
   Icon: (props: IIcon) => FontAwesomeIcon;
   "PerformerDetailsPanel.DetailGroup": (
     props: IPerformerDetailsPanelDetailGroup
   ) => React.JSX.Element;
+  PerformerCard: (props: IPerformerCardProps) => React.JSX.Element;
+  "PerformerCard.Details": (props: IPerformerCardProps) => React.JSX.Element;
+  "PerformerCard.Image": (props: IPerformerCardProps) => React.JSX.Element;
+  "PerformerCard.Title": (props: IPerformerCardProps) => React.JSX.Element;
   SceneCard: (props: ISceneCardProps) => React.JSX.Element;
 }
 
@@ -108,6 +113,10 @@ interface PatchableComponents {
 }
 
 interface PatchableComponentsAfter {
+  (
+    component: "MainNavBar.UtilityItems",
+    fn: (props: React.PropsWithChildren) => React.JSX.Element[]
+  ): void;
   (
     component: "PerformerDetailsPanel.DetailGroup",
     fn: (props: IPerformerDetailsPanelDetailGroup) => React.JSX.Element[]
@@ -122,6 +131,46 @@ interface PatchableComponentsBefore {
 }
 
 interface PatchableComponentsInstead {
+  (
+    component: "MainNavBar.UtilityItems",
+    fn: (
+      props: React.PropsWithChildren,
+      _: object,
+      Original: React.JSX
+    ) => React.JSX.Element[]
+  ): void;
+  (
+    component: "PerformerCard",
+    fn: (
+      props: IPerformerCardProps,
+      _: object,
+      Original: React.JSX
+    ) => React.JSX.Element[]
+  ): void;
+  (
+    component: "PerformerCard.Details",
+    fn: (
+      props: IPerformerCardProps,
+      _: object,
+      Original: React.JSX
+    ) => React.JSX.Element[]
+  ): void;
+  (
+    component: "PerformerCard.Image",
+    fn: (
+      props: IPerformerCardProps,
+      _: object,
+      Original: React.JSX
+    ) => React.JSX.Element[]
+  ): void;
+  (
+    component: "PerformerCard.Title",
+    fn: (
+      props: IPerformerCardProps,
+      _: object,
+      Original: React.JSX
+    ) => React.JSX.Element[]
+  ): void;
   (
     component: "PerformerDetailsPanel.DetailGroup",
     fn: (
@@ -189,6 +238,30 @@ interface IHoverPopover extends React.PropsWithChildren {
   target?: React.RefObject<HTMLElement>;
 }
 
+interface ILabeledId {
+  id: string;
+  label: string;
+}
+
+interface IPerformerCardProps {
+  performer: Performer;
+  containerWidth?: number;
+  ageFromDate?: string;
+  selecting?: boolean;
+  selected?: boolean;
+  zoomIndex?: number;
+  onSelectedChanged?: (selected: boolean, shiftKey: boolean) => void;
+  extraCriteria?: IPerformerCardExtraCriteria;
+}
+
+export interface IPerformerCardExtraCriteria {
+  scenes?: Scene[];
+  images?: Image[];
+  galleries?: Gallery[];
+  groups?: Group[];
+  performer?: ILabeledId;
+}
+
 interface ISceneCardProps {
   scene: Scene;
   containerWidth?: number;
@@ -207,4 +280,23 @@ interface IIcon {
   className?: string;
   color?: string;
   size?: SizeProp;
+}
+
+interface ISetting {
+  id?: string;
+  advanced?: boolean;
+  className?: string;
+  heading?: React.ReactNode;
+  headingID?: string;
+  subHeadingID?: string;
+  subHeading?: React.ReactNode;
+  tooltipID?: string;
+  onClick?: React.MouseEventHandler<HTMLDivElement>;
+  disabled?: boolean;
+}
+
+interface IBooleanSetting extends ISetting {
+  id: string;
+  checked?: boolean;
+  onChange: (v: boolean) => void;
 }
