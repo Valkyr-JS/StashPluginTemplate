@@ -275,6 +275,15 @@ interface ISceneCardProps {
   onSelectedChanged?: (selected: boolean, shiftKey: boolean) => void;
 }
 
+interface IScenePreviewProps {
+  isPortrait: boolean;
+  image?: string;
+  video?: string;
+  soundActive: boolean;
+  vttPath?: string;
+  onScrubberClick?: (timestamp: number) => void;
+}
+
 interface IIcon {
   icon: IconDefinition;
   className?: string;
