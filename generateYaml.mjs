@@ -12,7 +12,7 @@ const jsFiles = [pkg.default.name + ".js"]
 // Check if CSS has been generated
 const cssFiles = []
 
-fs.readdir('dist/', (err, files) => {
+fs.readdir('dist/', (_err, files) => {
   files.forEach(file => {
     const isCss = file.split(".")[file.split(".").length -1] === "css"
     if (isCss) cssFiles.push(file)

@@ -1,5 +1,5 @@
 import React from "react";
-import MyDetailItem from "./components/MyDetailItem";
+import MyDetailItem from "@/components/MyDetailItem";
 import "./styles.scss";
 
 const { PluginApi } = window;
