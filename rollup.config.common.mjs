@@ -6,6 +6,7 @@ import peerDepsExternal from "rollup-plugin-peer-deps-external";
 import replace from "@rollup/plugin-replace";
 import typescript from "@rollup/plugin-typescript";
 import * as pkg from "./package.json" with { type: "json" };
+import "dotenv/config"
 
 const dest = process.env.STASH_PLUGIN_DEST ?? "dist";
 
