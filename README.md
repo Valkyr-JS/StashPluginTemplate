@@ -10,6 +10,8 @@ It's unlikely that any of the configurations need to be changed for the majority
 
 Your plugin settings are written in the `src/components/settings.json`. This is converted to YAML as part of the bundling process.
 
+Output is written to the `dist` folder by default. This can be changed by setting the `STASH_PLUGIN_DEST` environment variable to the desired output directory.
+
 ## Using the Plugin API
 
 The Stash plugin API can be accessed via `window.pluginApi` (see `src/main.tsx` for an example). The API exposes several libraries used by Stash, which are referenced as peer dependencies by this template. They can be imported into your files as normal, but will not be bundled into the plugin in order to reduce output size and avoid conflicts.

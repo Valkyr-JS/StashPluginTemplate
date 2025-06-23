@@ -7,6 +7,8 @@ import replace from "@rollup/plugin-replace";
 import typescript from "@rollup/plugin-typescript";
 import * as pkg from "./package.json" with { type: "json" };
 
+const dest = process.env.STASH_PLUGIN_DEST ?? "dist";
+
 const pluginID = pkg.default.name;
 
 // Replace require imports with Plugin API library references
@@ -41,17 +43,17 @@ export default {
   input: "src/main.tsx",
   output: {
     banner,
-    file: "dist/" + pluginID + ".js",
+    file: dest + "/" + pluginID + ".js",
     format: "cjs",
   },
   plugins: [
     commonjs(),
     copy({
       targets: [
-        { src: "src/source.yml", dest: "dist", rename: pluginID + ".yml" },
+        { src: "src/source.yml", dest, rename: pluginID + ".yml" },
       ],
     }),
-    del({ targets: "dist" }),
+    del({ targets: dest, force: true }),
     nodeResolve(),
     peerDepsExternal(),
     replace({
