@@ -2,6 +2,7 @@ import writeYamlFile from 'write-yaml-file'
 import pluginSettings from "./src/settings.json" with { type: "json" }
 import * as pkg from "./package.json" with { type: "json" };
 import fs from 'fs';
+import "dotenv/config"
 
 const dest = process.env.STASH_PLUGIN_DEST ?? "dist";
 const filename =  pkg.default.name + ".yml"
