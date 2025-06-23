@@ -3,6 +3,7 @@ import pluginSettings from "./src/settings.json" with { type: "json" }
 import * as pkg from "./package.json" with { type: "json" };
 import fs from 'fs';
 
+const dest = process.env.STASH_PLUGIN_DEST ?? "dist";
 const filename =  pkg.default.name + ".yml"
 
 // Only import the entry file. If you there are multiple entrypoints, you'll
@@ -12,7 +13,7 @@ const jsFiles = [pkg.default.name + ".js"]
 // Check if CSS has been generated
 const cssFiles = []
 
-fs.readdir('dist/', (_err, files) => {
+fs.readdir(dest + '/', (_err, files) => {
   files.forEach(file => {
     const isCss = file.split(".")[file.split(".").length -1] === "css"
     if (isCss) cssFiles.push(file)
@@ -31,6 +32,6 @@ const json = {
   settings: pluginSettings
 }
 
-writeYamlFile('dist/' + filename, json).then(() => {
-  console.log('Generated source file "' + filename + '".')
+writeYamlFile(dest + '/' + filename, json).then(() => {
+  console.log('Generated source file "' + dest + '/' + filename + '".')
 })
