@@ -54,5 +54,8 @@
     "sass": "^1.85.1",
     "typescript": "^5.8.2",
     "write-yaml-file": "^5.0.0"
+  },
+  "dependencies": {
+    "dotenv": "^16.5.0"
   }
 }
