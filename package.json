@@ -35,27 +35,27 @@
     "react-select": "^5.10.1"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^28.0.3",
-    "@rollup/plugin-node-resolve": "^16.0.1",
-    "@rollup/plugin-replace": "^6.0.2",
+    "@rollup/plugin-commonjs": "^29.0.0",
+    "@rollup/plugin-node-resolve": "^16.0.3",
+    "@rollup/plugin-replace": "^6.0.3",
     "@rollup/plugin-terser": "^0.4.4",
-    "@rollup/plugin-typescript": "^12.1.2",
+    "@rollup/plugin-typescript": "^12.3.0",
     "@types/mousetrap": "^1.6.15",
     "@types/react": "^18.3.3",
     "@types/react-bootstrap": "^0.32.36",
     "@types/react-dom": "^18.3.0",
     "@types/react-router-dom": "^5.3.3",
-    "postcss": "^8.5.3",
-    "rollup": "^4.35.0",
+    "postcss": "^8.5.6",
+    "rollup": "^4.54.0",
     "rollup-plugin-copy": "^3.5.0",
-    "rollup-plugin-delete": "^3.0.1",
+    "rollup-plugin-delete": "^3.0.2",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.2",
-    "sass": "^1.85.1",
-    "typescript": "^5.8.2",
+    "sass": "^1.97.1",
+    "typescript": "^5.9.3",
     "write-yaml-file": "^5.0.0"
   },
   "dependencies": {
-    "dotenv": "^16.5.0"
+    "dotenv": "^17.2.3"
   }
 }
