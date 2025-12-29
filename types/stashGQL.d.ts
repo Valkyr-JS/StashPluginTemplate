@@ -79,15 +79,43 @@ type BaseFile = {
   fingerprints: Array<Fingerprint>;
   id: Scalars['ID']['output'];
   mod_time: Scalars['Time']['output'];
+  parent_folder: Folder;
+  /** @deprecated Use parent_folder instead */
   parent_folder_id: Scalars['ID']['output'];
   path: Scalars['String']['output'];
   size: Scalars['Int64']['output'];
   updated_at: Scalars['Time']['output'];
+  zip_file?: Maybe<BasicFile>;
+  /** @deprecated Use zip_file instead */
   zip_file_id?: Maybe<Scalars['ID']['output']>;
 };
 
 
 type BaseFileFingerprintArgs = {
+  type: Scalars['String']['input'];
+};
+
+type BasicFile = BaseFile & {
+  __typename?: 'BasicFile';
+  basename: Scalars['String']['output'];
+  created_at: Scalars['Time']['output'];
+  fingerprint?: Maybe<Scalars['String']['output']>;
+  fingerprints: Array<Fingerprint>;
+  id: Scalars['ID']['output'];
+  mod_time: Scalars['Time']['output'];
+  parent_folder: Folder;
+  /** @deprecated Use parent_folder instead */
+  parent_folder_id: Scalars['ID']['output'];
+  path: Scalars['String']['output'];
+  size: Scalars['Int64']['output'];
+  updated_at: Scalars['Time']['output'];
+  zip_file?: Maybe<BasicFile>;
+  /** @deprecated Use zip_file instead */
+  zip_file_id?: Maybe<Scalars['ID']['output']>;
+};
+
+
+type BasicFileFingerprintArgs = {
   type: Scalars['String']['input'];
 };
 
@@ -193,6 +221,13 @@ type BulkPerformerUpdateInput = {
   weight?: InputMaybe<Scalars['Int']['input']>;
 };
 
+type BulkSceneMarkerUpdateInput = {
+  ids?: InputMaybe<Array<Scalars['ID']['input']>>;
+  primary_tag_id?: InputMaybe<Scalars['ID']['input']>;
+  tag_ids?: InputMaybe<BulkUpdateIds>;
+  title?: InputMaybe<Scalars['String']['input']>;
+};
+
 type BulkSceneUpdateInput = {
   clientMutationId?: InputMaybe<Scalars['String']['input']>;
   code?: InputMaybe<Scalars['String']['input']>;
@@ -210,6 +245,19 @@ type BulkSceneUpdateInput = {
   studio_id?: InputMaybe<Scalars['ID']['input']>;
   tag_ids?: InputMaybe<BulkUpdateIds>;
   title?: InputMaybe<Scalars['String']['input']>;
+  /** @deprecated Use urls */
+  url?: InputMaybe<Scalars['String']['input']>;
+  urls?: InputMaybe<BulkUpdateStrings>;
+};
+
+type BulkStudioUpdateInput = {
+  details?: InputMaybe<Scalars['String']['input']>;
+  favorite?: InputMaybe<Scalars['Boolean']['input']>;
+  ids: Array<Scalars['ID']['input']>;
+  ignore_auto_tag?: InputMaybe<Scalars['Boolean']['input']>;
+  parent_id?: InputMaybe<Scalars['ID']['input']>;
+  rating100?: InputMaybe<Scalars['Int']['input']>;
+  tag_ids?: InputMaybe<BulkUpdateIds>;
   /** @deprecated Use urls */
   url?: InputMaybe<Scalars['String']['input']>;
   urls?: InputMaybe<BulkUpdateStrings>;
@@ -333,6 +381,7 @@ type ConfigDefaultSettingsResult = {
 
 type ConfigDisableDropdownCreate = {
   __typename?: 'ConfigDisableDropdownCreate';
+  gallery: Scalars['Boolean']['output'];
   movie: Scalars['Boolean']['output'];
   performer: Scalars['Boolean']['output'];
   studio: Scalars['Boolean']['output'];
@@ -340,6 +389,7 @@ type ConfigDisableDropdownCreate = {
 };
 
 type ConfigDisableDropdownCreateInput = {
+  gallery?: InputMaybe<Scalars['Boolean']['input']>;
   movie?: InputMaybe<Scalars['Boolean']['input']>;
   performer?: InputMaybe<Scalars['Boolean']['input']>;
   studio?: InputMaybe<Scalars['Boolean']['input']>;
@@ -365,6 +415,8 @@ type ConfigGeneralInput = {
   customPerformerImageLocation?: InputMaybe<Scalars['String']['input']>;
   /** Path to the SQLite database */
   databasePath?: InputMaybe<Scalars['String']['input']>;
+  /** Path to trash directory - if set, deleted files will be moved here instead of being permanently deleted */
+  deleteTrashPath?: InputMaybe<Scalars['String']['input']>;
   /** whether to include range in generated funscript heatmaps */
   drawFunscriptHeatmapRange?: InputMaybe<Scalars['Boolean']['input']>;
   /** Array of file regexp to exclude from Video Scans */
@@ -397,6 +449,8 @@ type ConfigGeneralInput = {
   logAccess?: InputMaybe<Scalars['Boolean']['input']>;
   /** Name of the log file */
   logFile?: InputMaybe<Scalars['String']['input']>;
+  /** Maximum log size */
+  logFileMaxSize?: InputMaybe<Scalars['Int']['input']>;
   /** Minimum log level */
   logLevel?: InputMaybe<Scalars['String']['input']>;
   /** Whether to also output to stderr */
@@ -485,6 +539,8 @@ type ConfigGeneralResult = {
   customPerformerImageLocation?: Maybe<Scalars['String']['output']>;
   /** Path to the SQLite database */
   databasePath: Scalars['String']['output'];
+  /** Path to trash directory - if set, deleted files will be moved here instead of being permanently deleted */
+  deleteTrashPath: Scalars['String']['output'];
   /** whether to include range in generated funscript heatmaps */
   drawFunscriptHeatmapRange: Scalars['Boolean']['output'];
   /** Array of file regexp to exclude from Video Scans */
@@ -517,6 +573,8 @@ type ConfigGeneralResult = {
   logAccess: Scalars['Boolean']['output'];
   /** Name of the log file */
   logFile?: Maybe<Scalars['String']['output']>;
+  /** Maximum log size */
+  logFileMaxSize: Scalars['Int']['output'];
   /** Minimum log level */
   logLevel: Scalars['String']['output'];
   /** Whether to also output to stderr */
@@ -582,6 +640,7 @@ type ConfigGeneralResult = {
 };
 
 type ConfigImageLightboxInput = {
+  disableAnimation?: InputMaybe<Scalars['Boolean']['input']>;
   displayMode?: InputMaybe<ImageLightboxDisplayMode>;
   resetZoomOnNav?: InputMaybe<Scalars['Boolean']['input']>;
   scaleUp?: InputMaybe<Scalars['Boolean']['input']>;
@@ -592,6 +651,7 @@ type ConfigImageLightboxInput = {
 
 type ConfigImageLightboxResult = {
   __typename?: 'ConfigImageLightboxResult';
+  disableAnimation?: Maybe<Scalars['Boolean']['output']>;
   displayMode?: Maybe<ImageLightboxDisplayMode>;
   resetZoomOnNav?: Maybe<Scalars['Boolean']['output']>;
   scaleUp?: Maybe<Scalars['Boolean']['output']>;
@@ -633,6 +693,8 @@ type ConfigInterfaceInput = {
   noBrowser?: InputMaybe<Scalars['Boolean']['input']>;
   /** True if we should send notifications to the desktop */
   notificationsEnabled?: InputMaybe<Scalars['Boolean']['input']>;
+  /** True if SFW content mode is enabled */
+  sfwContentMode?: InputMaybe<Scalars['Boolean']['input']>;
   /** Show scene scrubber by default */
   showScrubber?: InputMaybe<Scalars['Boolean']['input']>;
   /** If true, studio overlays will be shown as text instead of logo images */
@@ -681,6 +743,8 @@ type ConfigInterfaceResult = {
   noBrowser?: Maybe<Scalars['Boolean']['output']>;
   /** True if we should send desktop notifications */
   notificationsEnabled?: Maybe<Scalars['Boolean']['output']>;
+  /** True if SFW content mode is enabled */
+  sfwContentMode: Scalars['Boolean']['output'];
   /** Show scene scrubber by default */
   showScrubber?: Maybe<Scalars['Boolean']['output']>;
   /** If true, studio overlays will be shown as text instead of logo images */
@@ -774,6 +838,8 @@ type CustomFieldsInput = {
   full?: InputMaybe<Scalars['Map']['input']>;
   /** If populated, only the keys in this map will be updated */
   partial?: InputMaybe<Scalars['Map']['input']>;
+  /** Remove any keys in this list */
+  remove?: InputMaybe<Array<Scalars['String']['input']>>;
 };
 
 type Dlnaip = {
@@ -838,6 +904,38 @@ type ExportObjectsInput = {
   tags?: InputMaybe<ExportObjectTypeInput>;
 };
 
+type FileFilterType = {
+  AND?: InputMaybe<FileFilterType>;
+  NOT?: InputMaybe<FileFilterType>;
+  OR?: InputMaybe<FileFilterType>;
+  basename?: InputMaybe<StringCriterionInput>;
+  /** Filter by creation time */
+  created_at?: InputMaybe<TimestampCriterionInput>;
+  dir?: InputMaybe<StringCriterionInput>;
+  /** Filter files that have an exact match available */
+  duplicated?: InputMaybe<PHashDuplicationCriterionInput>;
+  /** Filter by related galleries that meet this criteria */
+  galleries_filter?: InputMaybe<GalleryFilterType>;
+  gallery_count?: InputMaybe<IntCriterionInput>;
+  /** find files based on hash */
+  hashes?: InputMaybe<Array<FingerprintFilterInput>>;
+  image_count?: InputMaybe<IntCriterionInput>;
+  image_file_filter?: InputMaybe<ImageFileFilterInput>;
+  /** Filter by related images that meet this criteria */
+  images_filter?: InputMaybe<ImageFilterType>;
+  /** Filter by modification time */
+  mod_time?: InputMaybe<TimestampCriterionInput>;
+  parent_folder?: InputMaybe<HierarchicalMultiCriterionInput>;
+  path?: InputMaybe<StringCriterionInput>;
+  scene_count?: InputMaybe<IntCriterionInput>;
+  /** Filter by related scenes that meet this criteria */
+  scenes_filter?: InputMaybe<SceneFilterType>;
+  /** Filter by last update time */
+  updated_at?: InputMaybe<TimestampCriterionInput>;
+  video_file_filter?: InputMaybe<VideoFileFilterInput>;
+  zip_file?: InputMaybe<MultiCriterionInput>;
+};
+
 type FileSetFingerprintsInput = {
   /** only supplied fingerprint types will be modified */
   fingerprints: Array<SetFingerprintsInput>;
@@ -856,6 +954,18 @@ const enum FilterMode {
   Tags = 'TAGS'
 };
 
+type FindFilesResultType = {
+  __typename?: 'FindFilesResultType';
+  count: Scalars['Int']['output'];
+  /** Total duration in seconds of any video files */
+  duration: Scalars['Float']['output'];
+  files: Array<BaseFile>;
+  /** Total megapixels of any image files */
+  megapixels: Scalars['Float']['output'];
+  /** Total file size in bytes */
+  size: Scalars['Int']['output'];
+};
+
 type FindFilterType = {
   direction?: InputMaybe<SortDirectionEnum>;
   page?: InputMaybe<Scalars['Int']['input']>;
@@ -863,6 +973,12 @@ type FindFilterType = {
   per_page?: InputMaybe<Scalars['Int']['input']>;
   q?: InputMaybe<Scalars['String']['input']>;
   sort?: InputMaybe<Scalars['String']['input']>;
+};
+
+type FindFoldersResultType = {
+  __typename?: 'FindFoldersResultType';
+  count: Scalars['Int']['output'];
+  folders: Array<Folder>;
 };
 
 type FindGalleriesResultType = {
@@ -943,6 +1059,13 @@ type Fingerprint = {
   value: Scalars['String']['output'];
 };
 
+type FingerprintFilterInput = {
+  /** Hamming distance - defaults to 0 */
+  distance?: InputMaybe<Scalars['Int']['input']>;
+  type: Scalars['String']['input'];
+  value: Scalars['String']['input'];
+};
+
 type FloatCriterionInput = {
   modifier: CriterionModifier;
   value: Scalars['Float']['input'];
@@ -954,10 +1077,34 @@ type Folder = {
   created_at: Scalars['Time']['output'];
   id: Scalars['ID']['output'];
   mod_time: Scalars['Time']['output'];
+  parent_folder?: Maybe<Folder>;
+  /** @deprecated Use parent_folder instead */
   parent_folder_id?: Maybe<Scalars['ID']['output']>;
   path: Scalars['String']['output'];
   updated_at: Scalars['Time']['output'];
+  zip_file?: Maybe<BasicFile>;
+  /** @deprecated Use zip_file instead */
   zip_file_id?: Maybe<Scalars['ID']['output']>;
+};
+
+type FolderFilterType = {
+  AND?: InputMaybe<FolderFilterType>;
+  NOT?: InputMaybe<FolderFilterType>;
+  OR?: InputMaybe<FolderFilterType>;
+  /** Filter by creation time */
+  created_at?: InputMaybe<TimestampCriterionInput>;
+  /** Filter by files that meet this criteria */
+  files_filter?: InputMaybe<FileFilterType>;
+  /** Filter by related galleries that meet this criteria */
+  galleries_filter?: InputMaybe<GalleryFilterType>;
+  gallery_count?: InputMaybe<IntCriterionInput>;
+  /** Filter by modification time */
+  mod_time?: InputMaybe<TimestampCriterionInput>;
+  parent_folder?: InputMaybe<HierarchicalMultiCriterionInput>;
+  path?: InputMaybe<StringCriterionInput>;
+  /** Filter by last update time */
+  updated_at?: InputMaybe<TimestampCriterionInput>;
+  zip_file?: InputMaybe<MultiCriterionInput>;
 };
 
 /** Gallery type */
@@ -1059,10 +1206,14 @@ type GalleryFile = BaseFile & {
   fingerprints: Array<Fingerprint>;
   id: Scalars['ID']['output'];
   mod_time: Scalars['Time']['output'];
+  parent_folder: Folder;
+  /** @deprecated Use parent_folder instead */
   parent_folder_id: Scalars['ID']['output'];
   path: Scalars['String']['output'];
   size: Scalars['Int64']['output'];
   updated_at: Scalars['Time']['output'];
+  zip_file?: Maybe<BasicFile>;
+  /** @deprecated Use zip_file instead */
   zip_file_id?: Maybe<Scalars['ID']['output']>;
 };
 
@@ -1088,6 +1239,10 @@ type GalleryFilterType = {
   details?: InputMaybe<StringCriterionInput>;
   /** Filter by zip-file count */
   file_count?: InputMaybe<IntCriterionInput>;
+  /** Filter by related files that meet this criteria */
+  files_filter?: InputMaybe<FileFilterType>;
+  /** Filter by related folders that meet this criteria */
+  folders_filter?: InputMaybe<FolderFilterType>;
   /** Filter to only include galleries that have chapters. `true` or `false` */
   has_chapters?: InputMaybe<Scalars['String']['input']>;
   id?: InputMaybe<IntCriterionInput>;
@@ -1279,6 +1434,8 @@ type Group = {
   front_image_path?: Maybe<Scalars['String']['output']>;
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
+  o_counter?: Maybe<Scalars['Int']['output']>;
+  performer_count: Scalars['Int']['output'];
   rating100?: Maybe<Scalars['Int']['output']>;
   scene_count: Scalars['Int']['output'];
   scenes: Array<Scene>;
@@ -1289,6 +1446,11 @@ type Group = {
   tags: Array<Tag>;
   updated_at: Scalars['Time']['output'];
   urls: Array<Scalars['String']['output']>;
+};
+
+
+type GroupPerformer_CountArgs = {
+  depth?: InputMaybe<Scalars['Int']['input']>;
 };
 
 
@@ -1355,6 +1517,8 @@ type GroupFilterType = {
   /** Filter to only include groups missing this property */
   is_missing?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<StringCriterionInput>;
+  /** Filter by o-counter */
+  o_counter?: InputMaybe<IntCriterionInput>;
   /** Filter to only include groups where performer appears in a scene */
   performers?: InputMaybe<MultiCriterionInput>;
   rating100?: InputMaybe<IntCriterionInput>;
@@ -1568,20 +1732,31 @@ type ImageFile = BaseFile & {
   created_at: Scalars['Time']['output'];
   fingerprint?: Maybe<Scalars['String']['output']>;
   fingerprints: Array<Fingerprint>;
+  format: Scalars['String']['output'];
   height: Scalars['Int']['output'];
   id: Scalars['ID']['output'];
   mod_time: Scalars['Time']['output'];
+  parent_folder: Folder;
+  /** @deprecated Use parent_folder instead */
   parent_folder_id: Scalars['ID']['output'];
   path: Scalars['String']['output'];
   size: Scalars['Int64']['output'];
   updated_at: Scalars['Time']['output'];
   width: Scalars['Int']['output'];
+  zip_file?: Maybe<BasicFile>;
+  /** @deprecated Use zip_file instead */
   zip_file_id?: Maybe<Scalars['ID']['output']>;
 };
 
 
 type ImageFileFingerprintArgs = {
   type: Scalars['String']['input'];
+};
+
+type ImageFileFilterInput = {
+  format?: InputMaybe<StringCriterionInput>;
+  orientation?: InputMaybe<OrientationCriterionInput>;
+  resolution?: InputMaybe<ResolutionCriterionInput>;
 };
 
 type ImageFileType = {
@@ -1607,6 +1782,8 @@ type ImageFilterType = {
   details?: InputMaybe<StringCriterionInput>;
   /** Filter by file count */
   file_count?: InputMaybe<IntCriterionInput>;
+  /** Filter by related files that meet this criteria */
+  files_filter?: InputMaybe<FileFilterType>;
   /** Filter to only include images with these galleries */
   galleries?: InputMaybe<MultiCriterionInput>;
   /** Filter by related galleries that meet this criteria */
@@ -1942,7 +2119,9 @@ type Mutation = {
   /** @deprecated Use bulkGroupUpdate instead */
   bulkMovieUpdate?: Maybe<Array<Movie>>;
   bulkPerformerUpdate?: Maybe<Array<Performer>>;
+  bulkSceneMarkerUpdate?: Maybe<Array<SceneMarker>>;
   bulkSceneUpdate?: Maybe<Array<Scene>>;
+  bulkStudioUpdate?: Maybe<Array<Studio>>;
   bulkTagUpdate?: Maybe<Array<Tag>>;
   configureDLNA: ConfigDlnaResult;
   configureDefaults: ConfigDefaultSettingsResult;
@@ -2224,8 +2403,18 @@ type MutationBulkPerformerUpdateArgs = {
 };
 
 
+type MutationBulkSceneMarkerUpdateArgs = {
+  input: BulkSceneMarkerUpdateInput;
+};
+
+
 type MutationBulkSceneUpdateArgs = {
   input: BulkSceneUpdateInput;
+};
+
+
+type MutationBulkStudioUpdateArgs = {
+  input: BulkStudioUpdateInput;
 };
 
 
@@ -2981,6 +3170,8 @@ type PerformerFilterType = {
   gallery_count?: InputMaybe<IntCriterionInput>;
   /** Filter by gender */
   gender?: InputMaybe<GenderCriterionInput>;
+  /** Filter by groups where performer appears in scene */
+  groups?: InputMaybe<HierarchicalMultiCriterionInput>;
   /** Filter by hair color */
   hair_color?: InputMaybe<StringCriterionInput>;
   /** Filter by height in cm */
@@ -3199,6 +3390,14 @@ type Query = {
    * and the difference between their duration is smaller than durationDiff
    */
   findDuplicateScenes: Array<Array<Scene>>;
+  /** Find a file by its id or path */
+  findFile: BaseFile;
+  /** Queries for Files */
+  findFiles: FindFilesResultType;
+  /** Find a file by its id or path */
+  findFolder: Folder;
+  /** Queries for Files */
+  findFolders: FindFoldersResultType;
   findGalleries: FindGalleriesResultType;
   findGallery?: Maybe<Gallery>;
   /** Find a group by ID */
@@ -3297,6 +3496,8 @@ type Query = {
   scrapeSingleScene: Array<ScrapedScene>;
   /** Scrape for a single studio */
   scrapeSingleStudio: Array<ScrapedStudio>;
+  /** Scrape for a single tag */
+  scrapeSingleTag: Array<ScrapedTag>;
   /** Scrapes content based on a URL */
   scrapeURL?: Maybe<ScrapedContent>;
   /** Get stats */
@@ -3331,6 +3532,36 @@ type QueryFindDefaultFilterArgs = {
 type QueryFindDuplicateScenesArgs = {
   distance?: InputMaybe<Scalars['Int']['input']>;
   duration_diff?: InputMaybe<Scalars['Float']['input']>;
+};
+
+
+/** The query root for this schema */
+type QueryFindFileArgs = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  path?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** The query root for this schema */
+type QueryFindFilesArgs = {
+  file_filter?: InputMaybe<FileFilterType>;
+  filter?: InputMaybe<FindFilterType>;
+  ids?: InputMaybe<Array<Scalars['ID']['input']>>;
+};
+
+
+/** The query root for this schema */
+type QueryFindFolderArgs = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  path?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+/** The query root for this schema */
+type QueryFindFoldersArgs = {
+  filter?: InputMaybe<FindFilterType>;
+  folder_filter?: InputMaybe<FolderFilterType>;
+  ids?: InputMaybe<Array<Scalars['ID']['input']>>;
 };
 
 
@@ -3639,6 +3870,13 @@ type QueryScrapeSingleStudioArgs = {
 
 
 /** The query root for this schema */
+type QueryScrapeSingleTagArgs = {
+  input: ScrapeSingleTagInput;
+  source: ScraperSourceInput;
+};
+
+
+/** The query root for this schema */
 type QueryScrapeUrlArgs = {
   ty: ScrapeContentType;
   url: Scalars['String']['input'];
@@ -3933,6 +4171,8 @@ type SceneFilterType = {
   duration?: InputMaybe<IntCriterionInput>;
   /** Filter by file count */
   file_count?: InputMaybe<IntCriterionInput>;
+  /** Filter by related files that meet this criteria */
+  files_filter?: InputMaybe<FileFilterType>;
   /** Filter by frame rate */
   framerate?: InputMaybe<IntCriterionInput>;
   /** Filter to only include scenes with this gallery */
@@ -4319,6 +4559,11 @@ type ScrapeSingleStudioInput = {
   query?: InputMaybe<Scalars['String']['input']>;
 };
 
+type ScrapeSingleTagInput = {
+  /** Query can be either a name or a Stash ID */
+  query?: InputMaybe<Scalars['String']['input']>;
+};
+
 const enum ScrapeType {
   /** From existing object */
   Fragment = 'FRAGMENT',
@@ -4557,18 +4802,26 @@ type ScrapedSceneInput = {
 
 type ScrapedStudio = {
   __typename?: 'ScrapedStudio';
+  /** Aliases must be comma-delimited to be parsed correctly */
+  aliases?: Maybe<Scalars['String']['output']>;
+  details?: Maybe<Scalars['String']['output']>;
   image?: Maybe<Scalars['String']['output']>;
   name: Scalars['String']['output'];
   parent?: Maybe<ScrapedStudio>;
   remote_site_id?: Maybe<Scalars['String']['output']>;
   /** Set if studio matched */
   stored_id?: Maybe<Scalars['ID']['output']>;
+  tags?: Maybe<Array<ScrapedTag>>;
+  /** @deprecated use urls */
   url?: Maybe<Scalars['String']['output']>;
+  urls?: Maybe<Array<Scalars['String']['output']>>;
 };
 
 type ScrapedTag = {
   __typename?: 'ScrapedTag';
   name: Scalars['String']['output'];
+  /** Remote site ID, if applicable */
+  remote_site_id?: Maybe<Scalars['String']['output']>;
   /** Set if tag matched */
   stored_id?: Maybe<Scalars['ID']['output']>;
 };
@@ -4651,6 +4904,8 @@ type SetupInput = {
   databaseFile: Scalars['String']['input'];
   /** Empty to indicate default */
   generatedLocation: Scalars['String']['input'];
+  /** True if SFW content mode is enabled */
+  sfwContentMode?: InputMaybe<Scalars['Boolean']['input']>;
   stashes: Array<StashConfigInput>;
   storeBlobsInDatabase: Scalars['Boolean']['input'];
 };
@@ -4664,10 +4919,14 @@ type StashBox = {
   __typename?: 'StashBox';
   api_key: Scalars['String']['output'];
   endpoint: Scalars['String']['output'];
+  max_requests_per_minute: Scalars['Int']['output'];
   name: Scalars['String']['output'];
 };
 
-/** If neither ids nor names are set, tag all items */
+/**
+ * Accepts either ids, or a combination of names and stash_ids.
+ * If none are set, then all existing items will be tagged.
+ */
 type StashBoxBatchTagInput = {
   /** If batch adding studios, should their parent studios also be created? */
   createParent: Scalars['Boolean']['input'];
@@ -4678,17 +4937,20 @@ type StashBoxBatchTagInput = {
   endpoint?: InputMaybe<Scalars['Int']['input']>;
   /** Fields to exclude when executing the tagging */
   exclude_fields?: InputMaybe<Array<Scalars['String']['input']>>;
-  /** If set, only tag these ids */
+  /**
+   * IDs in stash of the items to update.
+   * If set, names and stash_ids fields will be ignored.
+   */
   ids?: InputMaybe<Array<Scalars['ID']['input']>>;
-  /** If set, only tag these names */
+  /** Names of the items in the stash-box instance to search for and create */
   names?: InputMaybe<Array<Scalars['String']['input']>>;
   /**
-   * If set, only tag these performer ids
+   * IDs in stash of the performers to update
    * @deprecated use ids
    */
   performer_ids?: InputMaybe<Array<Scalars['ID']['input']>>;
   /**
-   * If set, only tag these performer names
+   * Names of the performers in the stash-box instance to search for and create
    * @deprecated use names
    */
   performer_names?: InputMaybe<Array<Scalars['String']['input']>>;
@@ -4696,6 +4958,8 @@ type StashBoxBatchTagInput = {
   refresh: Scalars['Boolean']['input'];
   /** Endpoint of the stash-box instance to use */
   stash_box_endpoint?: InputMaybe<Scalars['String']['input']>;
+  /** Stash IDs of the items in the stash-box instance to search for and create */
+  stash_ids?: InputMaybe<Array<Scalars['String']['input']>>;
 };
 
 type StashBoxDraftSubmissionInput = {
@@ -4722,6 +4986,7 @@ type StashBoxFingerprintSubmissionInput = {
 type StashBoxInput = {
   api_key: Scalars['String']['input'];
   endpoint: Scalars['String']['input'];
+  max_requests_per_minute?: InputMaybe<Scalars['Int']['input']>;
   name: Scalars['String']['input'];
 };
 
@@ -4861,6 +5126,7 @@ type Studio = {
   /** @deprecated use groups instead */
   movies: Array<Movie>;
   name: Scalars['String']['output'];
+  o_counter?: Maybe<Scalars['Int']['output']>;
   parent_studio?: Maybe<Studio>;
   performer_count: Scalars['Int']['output'];
   rating100?: Maybe<Scalars['Int']['output']>;
@@ -4868,7 +5134,9 @@ type Studio = {
   stash_ids: Array<StashId>;
   tags: Array<Tag>;
   updated_at: Scalars['Time']['output'];
+  /** @deprecated Use urls */
   url?: Maybe<Scalars['String']['output']>;
+  urls: Array<Scalars['String']['output']>;
 };
 
 
@@ -4913,7 +5181,9 @@ type StudioCreateInput = {
   rating100?: InputMaybe<Scalars['Int']['input']>;
   stash_ids?: InputMaybe<Array<StashIdInput>>;
   tag_ids?: InputMaybe<Array<Scalars['ID']['input']>>;
+  /** @deprecated Use urls */
   url?: InputMaybe<Scalars['String']['input']>;
+  urls?: InputMaybe<Array<Scalars['String']['input']>>;
 };
 
 type StudioDestroyInput = {
@@ -4978,7 +5248,9 @@ type StudioUpdateInput = {
   rating100?: InputMaybe<Scalars['Int']['input']>;
   stash_ids?: InputMaybe<Array<StashIdInput>>;
   tag_ids?: InputMaybe<Array<Scalars['ID']['input']>>;
+  /** @deprecated Use urls */
   url?: InputMaybe<Scalars['String']['input']>;
+  urls?: InputMaybe<Array<Scalars['String']['input']>>;
 };
 
 type Subscription = {
@@ -5033,6 +5305,7 @@ type Tag = {
   scene_marker_count: Scalars['Int']['output'];
   /** Value that does not appear in the UI but overrides name for sorting */
   sort_name?: Maybe<Scalars['String']['output']>;
+  stash_ids: Array<StashId>;
   studio_count: Scalars['Int']['output'];
   updated_at: Scalars['Time']['output'];
 };
@@ -5089,6 +5362,7 @@ type TagCreateInput = {
   parent_ids?: InputMaybe<Array<Scalars['ID']['input']>>;
   /** Value that does not appear in the UI but overrides name for sorting */
   sort_name?: InputMaybe<Scalars['String']['input']>;
+  stash_ids?: InputMaybe<Array<StashIdInput>>;
 };
 
 type TagDestroyInput = {
@@ -5143,6 +5417,8 @@ type TagFilterType = {
   scenes_filter?: InputMaybe<SceneFilterType>;
   /** Filter by tag sort_name */
   sort_name?: InputMaybe<StringCriterionInput>;
+  /** Filter by StashID */
+  stash_id_endpoint?: InputMaybe<StashIdCriterionInput>;
   /** Filter by number of studios with this tag */
   studio_count?: InputMaybe<IntCriterionInput>;
   /** Filter by last update time */
@@ -5162,6 +5438,7 @@ type TagUpdateInput = {
   parent_ids?: InputMaybe<Array<Scalars['ID']['input']>>;
   /** Value that does not appear in the UI but overrides name for sorting */
   sort_name?: InputMaybe<Scalars['String']['input']>;
+  stash_ids?: InputMaybe<Array<StashIdInput>>;
 };
 
 type TagsMergeInput = {
@@ -5202,18 +5479,37 @@ type VideoFile = BaseFile & {
   height: Scalars['Int']['output'];
   id: Scalars['ID']['output'];
   mod_time: Scalars['Time']['output'];
+  parent_folder: Folder;
+  /** @deprecated Use parent_folder instead */
   parent_folder_id: Scalars['ID']['output'];
   path: Scalars['String']['output'];
   size: Scalars['Int64']['output'];
   updated_at: Scalars['Time']['output'];
   video_codec: Scalars['String']['output'];
   width: Scalars['Int']['output'];
+  zip_file?: Maybe<BasicFile>;
+  /** @deprecated Use zip_file instead */
   zip_file_id?: Maybe<Scalars['ID']['output']>;
 };
 
 
 type VideoFileFingerprintArgs = {
   type: Scalars['String']['input'];
+};
+
+type VideoFileFilterInput = {
+  audio_codec?: InputMaybe<StringCriterionInput>;
+  bitrate?: InputMaybe<IntCriterionInput>;
+  captions?: InputMaybe<StringCriterionInput>;
+  /** in seconds */
+  duration?: InputMaybe<IntCriterionInput>;
+  format?: InputMaybe<StringCriterionInput>;
+  framerate?: InputMaybe<IntCriterionInput>;
+  interactive?: InputMaybe<Scalars['Boolean']['input']>;
+  interactive_speed?: InputMaybe<IntCriterionInput>;
+  orientation?: InputMaybe<OrientationCriterionInput>;
+  resolution?: InputMaybe<ResolutionCriterionInput>;
+  video_codec?: InputMaybe<StringCriterionInput>;
 };
 
 type VisualFile = ImageFile | VideoFile;
