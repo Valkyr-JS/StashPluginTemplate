@@ -1,13 +1,19 @@
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import MyDetailItem from "@/components/MyDetailItem";
 import "./styles.scss";
 
 const { PluginApi } = window;
 const { GQL } = PluginApi;
 
+interface IPerformerDetails {
+  performer: Performer;
+  collapsed?: boolean;
+  fullWidth?: boolean;
+}
+
 // Replace the performer details panel at the top of the performer page with one
 // that has yellow text and an additional component.
-PluginApi.patch.instead(
+PluginApi.patch.instead<PropsWithChildren<IPerformerDetails>>(
   "PerformerDetailsPanel.DetailGroup",
   function (props, _, Original) {
     const performerID = props.performer.id;
